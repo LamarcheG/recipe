@@ -7,7 +7,7 @@ function App() {
       {/*Global style is applied here*/}
       <GlobalStyle />
       <div className="App">
-        <h1>Si ça marche ce texte sera rouge</h1>
+        <h1>Le texte ne sera plus rouge la on se calme</h1>
       </div>
     </>
   );
