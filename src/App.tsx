@@ -1,7 +1,14 @@
 import GlobalStyle from "global.style";
-import React from "react";
+import React, { useState } from "react";
+import { getRecipe } from "./Utility/Scrapper";
 
 function App() {
+  const [recipe, setRecipe] = useState(
+    getRecipe(
+      "https://cuisinez.telequebec.tv/recettes/2580/pain-maison-a-la-poele"
+    )
+  );
+  console.log(recipe);
   return (
     <>
       {/*Global style is applied here*/}
