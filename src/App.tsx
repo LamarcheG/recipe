@@ -1,14 +1,13 @@
 import GlobalStyle from "global.style";
 import React, { useEffect, useState } from "react";
-import { getRecipe } from "./Utility/Scrapper";
+import { scrapper } from "./Utility/Scrapper";
 
 function App() {
   const [recipe, setRecipe] = useState();
   const fetchData = async () => {
-    const recipe = await getRecipe(
+    const recipe = await scrapper(
       "https://cuisinez.telequebec.tv/recettes/2580/pain-maison-a-la-poele"
     );
-    console.log(recipe);
   };
 
   return (
