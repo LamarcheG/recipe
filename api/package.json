@@ -1,0 +1,19 @@
+{
+    "name": "recipe-api",
+    "version": "0.1.0",
+    "private": true,
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.bundle.js",
+        "build": "webpack",
+        "dev": "nodemon ./server.js localhost 3080"
+    },
+    "dependencies": {
+        "express": "^4.18.1",
+        "http-proxy-middleware": "^1.0.4"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.19",
+        "webpack": "^4.43.0"
+    }
+}

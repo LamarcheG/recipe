@@ -3,6 +3,7 @@ import GlobalStyle from "global.style";
 import { IRecipe } from "Interfaces/GlobalInterfaces";
 import React, { useState } from "react";
 import { scrapper } from "./Utility/Scrapper";
+import { AppService } from "./Services/app.service";
 
 function App() {
   const [recipe, setRecipe] = useState<IRecipe>();
