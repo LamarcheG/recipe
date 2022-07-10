@@ -6,15 +6,37 @@ const getHtml = async (url: string): Promise<string> => {
   return data;
 };
 
-const extractJson = (html: string) => {
-  const startTag = "application/ld+json";
-  html = html.slice(html.indexOf("{", html.indexOf(startTag)));
-  const endTag = "</script>";
-  const end = html.indexOf(endTag, 0);
-  const json = html.substring(0, end);
-  const recipe = JSON.parse(json);
-  console.log(recipe);
-  return recipe;
+const extractJsonList = (html: string) => {
+  const stringList = html.match(
+    /<script.*?type="application\/ld\+json"(.*?)>([\s\S]*?)<\/script>/g
+  );
+
+  console.log(stringList);
+  const result = stringList?.map((json: string) => {
+    const temp = json.replace(
+      /<script.*?type="application\/ld\+json"(.*?)>([\s\S]*?)<\/script>/g,
+      "$2"
+    );
+    return temp;
+  });
+  const json = result?.map((json: string) => {
+    return JSON.parse(json);
+  });
+  return json;
+};
+
+const chooseCorrectMetaData = (json: any) => {
+  if (!json) {
+    return;
+  }
+  let result = "";
+  json.forEach((item: any) => {
+    let temp = extractRecipeJson(item);
+    if (temp) {
+      result = temp;
+    }
+  });
+  return result;
 };
 
 const extractRecipeJson = (json: any) => {
@@ -26,12 +48,18 @@ const extractRecipeJson = (json: any) => {
   }
   if (!json["@type"]) {
     let recipe = "";
-    json["@graph"].forEach((item: any) => {
-      if (item["@type"] === "Recipe") {
-        recipe = item;
-      }
-    });
-    return recipe;
+    if (json["@graph"]) {
+      json["@graph"].forEach((item: any) => {
+        if (item["@type"] === "Recipe") {
+          recipe = item;
+        }
+      });
+    }
+    if (recipe) {
+      return recipe;
+    } else {
+      return;
+    }
   }
 };
 
@@ -94,6 +122,11 @@ const buildRecipeObject = (recipeJson: any): IRecipe => {
 
 export const scrapper = async (url: string): Promise<IRecipe> => {
   const html = await getHtml(url);
-  const recipe = buildRecipeObject(extractRecipeJson(extractJson(html)));
+  const jsonList = extractJsonList(html);
+  console.log("jsonList", jsonList);
+  const json = chooseCorrectMetaData(jsonList);
+  console.log("json", json);
+  const recipe = buildRecipeObject(json);
+  console.log(recipe);
   return recipe;
 };

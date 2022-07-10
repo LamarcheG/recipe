@@ -28,6 +28,10 @@ function App() {
           https://cuisinez.telequebec.tv/recettes/2580/pain-maison-a-la-poele
         </p>
         <p>https://lacuisineensemble.fr/que-faire-avec-de-la-viande-hachee/</p>
+        <p>https://www.boblechef.com/recettes/lasagne-classique</p>
+        <p>
+          https://ici.radio-canada.ca/mordu/recettes/2278/lasagne-sauce-bolognaise
+        </p>
         <input
           type="text"
           name="url"
