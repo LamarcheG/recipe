@@ -1,13 +1,21 @@
+import { RecipeItem } from "Components/RecipeItem/RecipeItem";
 import GlobalStyle from "global.style";
-import React, { useEffect, useState } from "react";
+import { IRecipe } from "Interfaces/GlobalInterfaces";
+import React, { useState } from "react";
 import { scrapper } from "./Utility/Scrapper";
 
 function App() {
-  const [recipe, setRecipe] = useState();
+  const [recipe, setRecipe] = useState<IRecipe>();
+  const [recipeUrl, setRecipeUrl] = useState("");
   const fetchData = async () => {
-    const recipe = await scrapper(
-      "https://cuisinez.telequebec.tv/recettes/2580/pain-maison-a-la-poele"
-    );
+    if (recipeUrl) {
+      const data = await scrapper(recipeUrl);
+      setRecipe(data);
+    }
+  };
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRecipeUrl(e.target.value);
   };
 
   return (
@@ -15,10 +23,21 @@ function App() {
       {/*Global style is applied here*/}
       <GlobalStyle />
       <div className="App">
-        <h1>Le texte ne sera plus rouge la on se calme</h1>
+        <h1>Recipe</h1>
+        <p>
+          https://cuisinez.telequebec.tv/recettes/2580/pain-maison-a-la-poele
+        </p>
+        <p>https://lacuisineensemble.fr/que-faire-avec-de-la-viande-hachee/</p>
+        <input
+          type="text"
+          name="url"
+          id="url"
+          placeholder="Url"
+          onChange={onChange}
+        />
+        <button onClick={fetchData}>fetch</button>
+        {recipe && <RecipeItem recipe={recipe}></RecipeItem>}
       </div>
-      <button onClick={fetchData}>fetch</button>
-      <p>{recipe}</p>
     </>
   );
 }

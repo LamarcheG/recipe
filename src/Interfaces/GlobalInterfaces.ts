@@ -12,7 +12,7 @@ export interface IRecipe {
 }
 
 export interface IInstructions {
-  type: "HowToStep" | "HowToSection";
+  type: "HowToStep";
   text: string; //The full instruction text of this step
   name?: string; //The word or short phrase summarizing the step
   url?: string; //A URL that directly links to the step (if one is available). For example, an anchor link fragment.
