@@ -4,7 +4,7 @@ export class AppService {
     return await response.json();
   }
 
-  public async addUser(user: any) {
+  public async createUser(user: any) {
     const response = await fetch(`/api/user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

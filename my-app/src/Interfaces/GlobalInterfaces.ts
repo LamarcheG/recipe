@@ -18,3 +18,9 @@ export interface IInstructions {
   url?: string; //A URL that directly links to the step (if one is available). For example, an anchor link fragment.
   image?: string; //An image for the step.
 }
+
+export interface IUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
