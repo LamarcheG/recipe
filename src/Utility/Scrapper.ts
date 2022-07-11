@@ -1,17 +1,21 @@
 import { IInstructions, IRecipe } from "Interfaces/GlobalInterfaces";
 
+//gets the html from the url
 const getHtml = async (url: string): Promise<string> => {
-  const response = await fetch(url);
-  const data = await response.text();
-  return data;
+  const response = await fetch(url)
+    .then((res) => res.text())
+    .catch((err) => {
+      console.log(err);
+      return "";
+    });
+  return response;
 };
 
+//scraps the html form every json obejct
 const extractJsonList = (html: string) => {
   const stringList = html.match(
     /<script.*?type="application\/ld\+json"(.*?)>([\s\S]*?)<\/script>/g
   );
-
-  console.log(stringList);
   const result = stringList?.map((json: string) => {
     const temp = json.replace(
       /<script.*?type="application\/ld\+json"(.*?)>([\s\S]*?)<\/script>/g,
@@ -25,27 +29,26 @@ const extractJsonList = (html: string) => {
   return json;
 };
 
+//loops every json object and finds the one with the type recipe
 const chooseCorrectMetaData = (json: any) => {
-  if (!json) {
-    return;
-  }
   let result = "";
   json.forEach((item: any) => {
-    let temp = extractRecipeJson(item);
-    if (temp) {
-      result = temp;
-    }
+    result = extractRecipeJson(item);
   });
   return result;
 };
 
+//extracts the recipe json from the json object
 const extractRecipeJson = (json: any) => {
+  //if json is a recipe
   if (json["@type"] === "Recipe") {
     return json;
   }
+  //if json is a recipe list
   if (json["@type"] === "RecipeCollection") {
     return json.itemListElement[0].item;
   }
+  //if json doesnt have a type
   if (!json["@type"]) {
     let recipe = "";
     if (json["@graph"]) {
@@ -63,8 +66,25 @@ const extractRecipeJson = (json: any) => {
   }
 };
 
+//flattens the instructions array ex: [[{},{}],[{}]] to [{},{},{}]
+const flattenInstructions = (instructionsBySection: any): IInstructions[] => {
+  if (!instructionsBySection || instructionsBySection.length === 0) {
+    return [];
+  }
+  let instructions: IInstructions[] = [];
+  instructionsBySection.forEach((section: any) => {
+    if (Array.isArray(section)) {
+      instructions = [...instructions, ...section];
+    } else {
+      instructions.push(section);
+    }
+  });
+  return instructions;
+};
+
+//builds the recipe object from the json object
 const buildRecipeObject = (recipeJson: any): IRecipe => {
-  const instructionsBySection = recipeJson.recipeInstructions.map(
+  const instructionsBySection = recipeJson?.recipeInstructions.map(
     (section: any) => {
       if (section["@type"] === "HowToSection") {
         const sectionSteps = section.itemListElement?.map((step: any) => {
@@ -96,14 +116,8 @@ const buildRecipeObject = (recipeJson: any): IRecipe => {
       }
     }
   );
-  let instructions: IInstructions[] = [];
-  instructionsBySection.forEach((section: any) => {
-    if (Array.isArray(section)) {
-      instructions = [...instructions, ...section];
-    } else {
-      instructions.push(section);
-    }
-  });
+
+  const instructions = flattenInstructions(instructionsBySection);
 
   const recipe: IRecipe = {
     name: recipeJson.name,
@@ -120,13 +134,21 @@ const buildRecipeObject = (recipeJson: any): IRecipe => {
   return recipe;
 };
 
-export const scrapper = async (url: string): Promise<IRecipe> => {
+export const scrapper = async (url: string) => {
   const html = await getHtml(url);
+  if (!html || html === "") {
+    console.error("No html found");
+    return;
+  }
   const jsonList = extractJsonList(html);
-  console.log("jsonList", jsonList);
-  const json = chooseCorrectMetaData(jsonList);
-  console.log("json", json);
-  const recipe = buildRecipeObject(json);
-  console.log(recipe);
-  return recipe;
+  if (!jsonList || jsonList.length === 0) {
+    console.error("No MetaData found");
+    return;
+  }
+  const recipeJson = chooseCorrectMetaData(jsonList);
+  if (!recipeJson) {
+    console.error("No recipe found");
+    return;
+  }
+  return buildRecipeObject(recipeJson);
 };
