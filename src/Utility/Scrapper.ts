@@ -122,11 +122,13 @@ const buildRecipeObject = (recipeJson: any): IRecipe => {
   const recipe: IRecipe = {
     name: recipeJson.name,
     image: recipeJson.image,
-    description: recipeJson.description,
+    description: removeSpecialCharacters(recipeJson.description),
     prepTime: recipeJson.prepTime,
     cookTime: recipeJson.cookTime,
-    recipeIngredient: recipeJson.recipeIngredient,
-    recipeInstructions: instructions,
+    recipeIngredient: removeSpecialCharactersFromIngredients(
+      recipeJson.recipeIngredient
+    ),
+    recipeInstructions: removeSpecialCharactersFromInstructions(instructions),
     recipeCategory: recipeJson.recipeCategory,
     datePublished: recipeJson.datePublished,
     recipeYield: recipeJson.recipeYield,
@@ -151,4 +153,33 @@ export const scrapper = async (url: string) => {
     return;
   }
   return buildRecipeObject(recipeJson);
+};
+
+//function to remove &quot; and &amp; and &#39; from the string
+const removeSpecialCharacters = (string: string) => {
+  return string
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&#039;/g, "'");
+};
+
+//function to remove special characters form ingredients
+const removeSpecialCharactersFromIngredients = (
+  ingredients: string[]
+): string[] => {
+  return ingredients.map((ingredient: string) => {
+    return removeSpecialCharacters(ingredient);
+  });
+};
+
+//function to remove special characters form instructions
+const removeSpecialCharactersFromInstructions = (
+  instructions: IInstructions[]
+): IInstructions[] => {
+  return instructions.map((instruction: IInstructions) => {
+    return {
+      ...instruction,
+      text: removeSpecialCharacters(instruction.text),
+    };
+  });
 };
