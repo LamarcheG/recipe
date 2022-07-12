@@ -1,3 +1,4 @@
+import userEvent from "@testing-library/user-event";
 import { RecipeItem } from "Components/RecipeItem/RecipeItem";
 import GlobalStyle from "global.style";
 import { IRecipe } from "Interfaces/GlobalInterfaces";
