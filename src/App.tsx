@@ -1,5 +1,7 @@
 import userEvent from "@testing-library/user-event";
+import { AppContainer, InputButton, InputContainer, InputUrl } from "App.style";
 import { RecipeItem } from "Components/RecipeItem/RecipeItem";
+import { Title } from "Components/RecipeItem/RecipeItem.style";
 import GlobalStyle from "global.style";
 import { IRecipe } from "Interfaces/GlobalInterfaces";
 import React, { useState } from "react";
@@ -23,8 +25,8 @@ function App() {
     <>
       {/*Global style is applied here*/}
       <GlobalStyle />
-      <div className="App">
-        <h1>Recipe</h1>
+      <AppContainer>
+        <Title>Recipe</Title>
         <p>
           https://cuisinez.telequebec.tv/recettes/2580/pain-maison-a-la-poele
         </p>
@@ -33,16 +35,18 @@ function App() {
         <p>
           https://ici.radio-canada.ca/mordu/recettes/2278/lasagne-sauce-bolognaise
         </p>
-        <input
-          type="text"
-          name="url"
-          id="url"
-          placeholder="Url"
-          onChange={onChange}
-        />
-        <button onClick={fetchData}>fetch</button>
+        <InputContainer>
+          <InputUrl
+            type="text"
+            name="url"
+            id="url"
+            placeholder="Url"
+            onChange={onChange}
+          />
+          <InputButton onClick={fetchData}>fetch</InputButton>
+        </InputContainer>
         {recipe && <RecipeItem recipe={recipe}></RecipeItem>}
-      </div>
+      </AppContainer>
     </>
   );
 }
