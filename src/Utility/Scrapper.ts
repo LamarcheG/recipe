@@ -1,4 +1,9 @@
 import { IInstructions, IRecipe } from "Interfaces/GlobalInterfaces";
+import {
+  removeSpecialCharacters,
+  removeSpecialCharactersFromIngredients,
+  removeSpecialCharactersFromInstructions,
+} from "./Utility";
 
 //gets the html from the url
 const getHtml = async (url: string): Promise<string> => {
@@ -153,33 +158,4 @@ export const scrapper = async (url: string) => {
     return;
   }
   return buildRecipeObject(recipeJson);
-};
-
-//function to remove &quot; and &amp; and &#39; from the string
-const removeSpecialCharacters = (string: string) => {
-  return string
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, "&")
-    .replace(/&#039;/g, "'");
-};
-
-//function to remove special characters form ingredients
-const removeSpecialCharactersFromIngredients = (
-  ingredients: string[]
-): string[] => {
-  return ingredients.map((ingredient: string) => {
-    return removeSpecialCharacters(ingredient);
-  });
-};
-
-//function to remove special characters form instructions
-const removeSpecialCharactersFromInstructions = (
-  instructions: IInstructions[]
-): IInstructions[] => {
-  return instructions.map((instruction: IInstructions) => {
-    return {
-      ...instruction,
-      text: removeSpecialCharacters(instruction.text),
-    };
-  });
 };

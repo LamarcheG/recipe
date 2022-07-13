@@ -12,7 +12,7 @@ export const AppContainer = styled.div`
   justify-content: center;
 `;
 
-export const InputContainer = styled.div`
+export const InputContainer = styled.form`
   display: flex;
   flex-direction: row;
   align-items: center;

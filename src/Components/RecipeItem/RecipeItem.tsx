@@ -1,5 +1,6 @@
 import { IRecipe } from "Interfaces/GlobalInterfaces";
 import React from "react";
+import { convertFromISO } from "Utility/Utility";
 import {
   ContainerCard,
   ContentContainer,
@@ -27,31 +28,6 @@ interface RecipeItemProps {
 export const RecipeItem: React.FC<RecipeItemProps> = ({
   recipe,
 }: RecipeItemProps) => {
-  //function that convert from P3Y6M4DT12H30M5S to 3 years, 6 months, 4 days, 12 hours, 30 minutes, 5 seconds
-  const convertFromISO = (time: string): string => {
-    const [, years, months, days, hours, minutes, seconds] = time.match(
-      /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/
-    )!;
-    const yearsString = years && years !== "0" ? `${years} years` : "";
-    const monthsString = months && months !== "0" ? `${months} months` : "";
-    const daysString = days && days !== "0" ? `${days} days` : "";
-    const hoursString = hours && hours !== "0" ? `${hours}h` : "";
-    const minutesString = minutes && minutes !== "0" ? `${minutes} min` : "";
-    const secondsString = seconds && seconds !== "0" ? `${seconds} sec` : "";
-    const timeStringArray = [
-      yearsString,
-      monthsString,
-      daysString,
-      hoursString,
-      minutesString,
-      secondsString,
-    ];
-    const timeStringArrayFiltered = timeStringArray.filter(
-      (timeString) => timeString !== ""
-    );
-    const result = timeStringArrayFiltered.join(":");
-    return result;
-  };
   const convertPortions = (portions: string | number): string => {
     if (typeof portions === "number") {
       if (portions === 1) {
