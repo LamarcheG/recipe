@@ -2,8 +2,8 @@ export interface IRecipe {
   name: string;
   image: string[];
   description?: string; //A short summary describing the dish.
-  prepTime?: number;
-  cookTime?: number;
+  prepTime?: string;
+  cookTime?: string;
   recipeIngredient?: string[];
   recipeInstructions?: IInstructions[];
   recipeCategory?: string; //The type of meal or course your recipe is about. For example: "dinner", "main course", or "dessert, snack".

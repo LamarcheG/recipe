@@ -26,6 +26,18 @@ export const convertFromISO = (time: string): string => {
   return result;
 };
 
+//convert from minutes to P3Y6M4DT12H30M5S
+export const convertToISO = (time: number): string => {
+  const years = Math.floor(time / 525600);
+  const months = Math.floor((time % 525600) / 43200);
+  const days = Math.floor((time % 43200) / 1440);
+  const hours = Math.floor((time % 1440) / 60);
+  const minutes = Math.floor(time % 60);
+  const seconds = 0;
+  const result = `P${years}Y${months}M${days}DT${hours}H${minutes}M${seconds}S`;
+  return result;
+};
+
 //function to remove &quot; and &amp; and &#39; from the string
 export const removeSpecialCharacters = (string: string) => {
   return string
