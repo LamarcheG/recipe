@@ -19,6 +19,9 @@ const GlobalStyle = createGlobalStyle`
     --step-4: clamp(1.8rem, calc(1.61rem + 2.30vw), 2.70rem);
     --step-5: clamp(2.00rem, calc(1.87rem + 3.05vw), 3.1rem);
 }
+button{
+    cursor:pointer;
+}
 h1 {
   font-size: var(--step-5);
 }

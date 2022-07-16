@@ -2,18 +2,19 @@ import { RecipeItem } from "Components/RecipeItem/RecipeItem";
 import { IRecipe, IInstructions } from "Interfaces/GlobalInterfaces";
 import React, { useState } from "react";
 import { scrapper } from "Utility/Scrapper";
-import { convertToISO, isValidUrl } from "Utility/Utility";
+import { convertToISO, isImage, isValidUrl } from "Utility/Utility";
 import {
-  AddButton,
+  EmbeddedButton,
   ShortInputContainer,
   FormInputLabel,
   InputButton,
-  InputContainer,
   InputUrl,
   InstructionForm,
   LongInputContainer,
   RecipeForm,
   LongInput,
+  IngredientList,
+  CreateRecipeButton,
 } from "./RecipeItemForm.style";
 
 interface RecipeItemFormProps {}
@@ -50,7 +51,9 @@ export const RecipeItemForm: React.FC<
   const [urlError, setUrlError] = useState<string>();
   const [addInstruction, setAddInstruction] = useState<boolean>(false);
 
-  const fetchData = async (e: React.FormEvent<HTMLFormElement>) => {
+  const fetchData = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (!isValidUrl(recipeUrl)) {
       setUrlError("Invalid URL");
@@ -114,6 +117,9 @@ export const RecipeItemForm: React.FC<
   ) => {
     e.preventDefault();
     if (!isValidUrl(image)) {
+      return;
+    }
+    if (!isImage(image)) {
       return;
     }
     setImageList((prev) => [...prev, image]);
@@ -194,7 +200,9 @@ export const RecipeItemForm: React.FC<
               onChange={(e) => onRecipeFormChange(e)}
               required
             />
-            <AddButton onClick={(e) => onImageFormSubmit(e)}>Add</AddButton>
+            <EmbeddedButton onClick={(e) => onImageFormSubmit(e)}>
+              Add
+            </EmbeddedButton>
           </LongInputContainer>
         </ShortInputContainer>
         {imageList.length > 0 && (
@@ -260,23 +268,23 @@ export const RecipeItemForm: React.FC<
               id="recipeIngredient"
               onChange={(e) => onRecipeFormChange(e)}
             />
-            <AddButton onClick={(e) => onRecipeIngredientFormSubmit(e)}>
+            <EmbeddedButton onClick={(e) => onRecipeIngredientFormSubmit(e)}>
               Add
-            </AddButton>
+            </EmbeddedButton>
           </LongInputContainer>
         </ShortInputContainer>
         {recipeIngredientList.length > 0 && (
-          <ul>
+          <IngredientList>
             {recipeIngredientList.map((ingredient, index) => (
               <li key={index}>{ingredient}</li>
             ))}
-          </ul>
+          </IngredientList>
         )}
         <ShortInputContainer>
           <FormInputLabel htmlFor="instructions">Instructions</FormInputLabel>
-          <button onClick={() => setAddInstruction((prev) => !prev)}>
+          <InputButton onClick={() => setAddInstruction((prev) => !prev)}>
             {addInstruction ? "Hide" : "Add instructions"}
-          </button>
+          </InputButton>
         </ShortInputContainer>
         {addInstruction && (
           <InstructionForm>
@@ -308,22 +316,21 @@ export const RecipeItemForm: React.FC<
             ))}
           </ul>
         )}
-        <InputButton onClick={(e) => onRecipeFormSubmit(e)}>
+        <CreateRecipeButton onClick={(e) => onRecipeFormSubmit(e)}>
           Create recipe
-        </InputButton>
+        </CreateRecipeButton>
       </RecipeForm>
-      <InputContainer onSubmit={(e) => fetchData(e)}>
-        <p>{urlError}</p>
-        <InputUrl
+      <p>{urlError}</p>
+      <LongInputContainer>
+        <LongInput
           type="text"
           name="url"
           id="url"
           placeholder="Url"
           onChange={(e) => onRecipeFormChange(e)}
-          required
         />
-        <InputButton type="submit">fetch</InputButton>
-      </InputContainer>
+        <EmbeddedButton onClick={(e) => fetchData(e)}>fetch</EmbeddedButton>
+      </LongInputContainer>
       {recipe && <RecipeItem recipe={recipe}></RecipeItem>}
     </>
   );
