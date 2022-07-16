@@ -4,13 +4,16 @@ import React, { useState } from "react";
 import { scrapper } from "Utility/Scrapper";
 import { convertToISO, isValidUrl } from "Utility/Utility";
 import {
-  FormInput,
+  AddButton,
+  ShortInputContainer,
   FormInputLabel,
   InputButton,
   InputContainer,
   InputUrl,
   InstructionForm,
+  LongInputContainer,
   RecipeForm,
+  LongInput,
 } from "./RecipeItemForm.style";
 
 interface RecipeItemFormProps {}
@@ -119,6 +122,12 @@ export const RecipeItemForm: React.FC<
   const onRecipeIngredientFormSubmit = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
+    if (
+      recipeIngredient.length === 0 ||
+      recipeIngredient.replace(/\s/g, "") === ""
+    ) {
+      return;
+    }
     e.preventDefault();
     setRecipeIngredientList((prev) => [...prev, recipeIngredient]);
   };
@@ -165,7 +174,7 @@ export const RecipeItemForm: React.FC<
   return (
     <>
       <RecipeForm>
-        <FormInput>
+        <ShortInputContainer>
           <FormInputLabel htmlFor="name">Name</FormInputLabel>
           <input
             type="text"
@@ -174,18 +183,20 @@ export const RecipeItemForm: React.FC<
             onChange={(e) => onRecipeFormChange(e)}
             required
           />
-        </FormInput>
-        <FormInput>
+        </ShortInputContainer>
+        <ShortInputContainer>
           <FormInputLabel htmlFor="image">Image url</FormInputLabel>
-          <input
-            type="text"
-            name="image"
-            id="image"
-            onChange={(e) => onRecipeFormChange(e)}
-            required
-          />
-          <button onClick={(e) => onImageFormSubmit(e)}>Add</button>
-        </FormInput>
+          <LongInputContainer>
+            <LongInput
+              type="text"
+              name="image"
+              id="image"
+              onChange={(e) => onRecipeFormChange(e)}
+              required
+            />
+            <AddButton onClick={(e) => onImageFormSubmit(e)}>Add</AddButton>
+          </LongInputContainer>
+        </ShortInputContainer>
         {imageList.length > 0 && (
           <ul>
             {imageList.map((image, index) => (
@@ -193,7 +204,7 @@ export const RecipeItemForm: React.FC<
             ))}
           </ul>
         )}
-        <FormInput>
+        <ShortInputContainer>
           <FormInputLabel htmlFor="description">Description</FormInputLabel>
           <input
             type="text"
@@ -201,8 +212,8 @@ export const RecipeItemForm: React.FC<
             id="description"
             onChange={(e) => onRecipeFormChange(e)}
           />
-        </FormInput>
-        <FormInput>
+        </ShortInputContainer>
+        <ShortInputContainer>
           <FormInputLabel htmlFor="prepTime">Prep time(minutes)</FormInputLabel>
           <input
             type="number"
@@ -211,8 +222,8 @@ export const RecipeItemForm: React.FC<
             onChange={(e) => onRecipeFormChange(e)}
             min="0"
           />
-        </FormInput>
-        <FormInput>
+        </ShortInputContainer>
+        <ShortInputContainer>
           <FormInputLabel htmlFor="cookTime">Cook time(minutes)</FormInputLabel>
           <input
             type="number"
@@ -221,8 +232,8 @@ export const RecipeItemForm: React.FC<
             min="0"
             onChange={(e) => onRecipeFormChange(e)}
           />
-        </FormInput>
-        <FormInput>
+        </ShortInputContainer>
+        <ShortInputContainer>
           <FormInputLabel htmlFor="category">Category</FormInputLabel>
           <input
             type="text"
@@ -230,8 +241,8 @@ export const RecipeItemForm: React.FC<
             id="recipeCategory"
             onChange={(e) => onRecipeFormChange(e)}
           />
-        </FormInput>
-        <FormInput>
+        </ShortInputContainer>
+        <ShortInputContainer>
           <FormInputLabel htmlFor="portions">Portions</FormInputLabel>
           <input
             type="text"
@@ -239,19 +250,21 @@ export const RecipeItemForm: React.FC<
             id="recipeYield"
             onChange={(e) => onRecipeFormChange(e)}
           />
-        </FormInput>
-        <FormInput>
+        </ShortInputContainer>
+        <ShortInputContainer>
           <FormInputLabel htmlFor="ingredients">Ingredients</FormInputLabel>
-          <input
-            type="text"
-            name="recipeIngredient"
-            id="recipeIngredient"
-            onChange={(e) => onRecipeFormChange(e)}
-          />
-          <button onClick={(e) => onRecipeIngredientFormSubmit(e)}>
-            Add ingredient
-          </button>
-        </FormInput>
+          <LongInputContainer>
+            <LongInput
+              type="text"
+              name="recipeIngredient"
+              id="recipeIngredient"
+              onChange={(e) => onRecipeFormChange(e)}
+            />
+            <AddButton onClick={(e) => onRecipeIngredientFormSubmit(e)}>
+              Add
+            </AddButton>
+          </LongInputContainer>
+        </ShortInputContainer>
         {recipeIngredientList.length > 0 && (
           <ul>
             {recipeIngredientList.map((ingredient, index) => (
@@ -259,15 +272,15 @@ export const RecipeItemForm: React.FC<
             ))}
           </ul>
         )}
-        <FormInput>
+        <ShortInputContainer>
           <FormInputLabel htmlFor="instructions">Instructions</FormInputLabel>
           <button onClick={() => setAddInstruction((prev) => !prev)}>
             {addInstruction ? "Hide" : "Add instructions"}
           </button>
-        </FormInput>
+        </ShortInputContainer>
         {addInstruction && (
           <InstructionForm>
-            <FormInput>
+            <ShortInputContainer>
               <FormInputLabel htmlFor="instructionName">Name</FormInputLabel>
               <input
                 type="text"
@@ -275,8 +288,8 @@ export const RecipeItemForm: React.FC<
                 id="instructionName"
                 onChange={(e) => onInstructionFormChange(e)}
               />
-            </FormInput>
-            <FormInput>
+            </ShortInputContainer>
+            <ShortInputContainer>
               <FormInputLabel htmlFor="instruction">Text</FormInputLabel>
               <input
                 type="text"
@@ -284,7 +297,7 @@ export const RecipeItemForm: React.FC<
                 id="instructionText"
                 onChange={(e) => onInstructionFormChange(e)}
               />
-            </FormInput>
+            </ShortInputContainer>
             <button onClick={(e) => onInstructionFormSubmit(e)}>Add</button>
           </InstructionForm>
         )}
