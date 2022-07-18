@@ -1,12 +1,18 @@
-import userEvent from "@testing-library/user-event";
 import { AppContainer } from "App.style";
 import { Title } from "Components/RecipeItem/RecipeItem.style";
 import { RecipeItemForm } from "Components/RecipeItemForm/RecipeItemForm";
+import { RecipeList } from "Components/RecipeList/RecipeList";
 import GlobalStyle from "global.style";
+import { IRecipe } from "Interfaces/GlobalInterfaces";
 import React, { useState } from "react";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [recipes, setRecipes] = useState<IRecipe[]>([]);
+
+  const addRecipe = (recipe: IRecipe) => {
+    const newArray = [recipe, ...recipes];
+    setRecipes(newArray);
+  };
 
   return (
     <>
@@ -22,7 +28,8 @@ function App() {
         <p>
           https://ici.radio-canada.ca/mordu/recettes/2278/lasagne-sauce-bolognaise
         </p>
-        <RecipeItemForm></RecipeItemForm>
+        <RecipeItemForm addRecipe={addRecipe}></RecipeItemForm>
+        <RecipeList recipes={recipes}></RecipeList>
       </AppContainer>
     </>
   );

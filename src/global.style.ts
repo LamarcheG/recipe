@@ -22,6 +22,9 @@ const GlobalStyle = createGlobalStyle`
 button{
     cursor:pointer;
 }
+ul{
+    list-style:none;
+}
 h1 {
   font-size: var(--step-5);
 }

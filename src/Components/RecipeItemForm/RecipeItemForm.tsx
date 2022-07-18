@@ -1,6 +1,5 @@
-import { RecipeItem } from "Components/RecipeItem/RecipeItem";
 import { IRecipe, IInstructions } from "Interfaces/GlobalInterfaces";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { scrapper } from "Utility/Scrapper";
 import { convertToISO, isImage, isValidUrl } from "Utility/Utility";
 import {
@@ -8,7 +7,6 @@ import {
   ShortInputContainer,
   FormInputLabel,
   InputButton,
-  InputUrl,
   InstructionForm,
   LongInputContainer,
   RecipeForm,
@@ -17,11 +15,13 @@ import {
   CreateRecipeButton,
 } from "./RecipeItemForm.style";
 
-interface RecipeItemFormProps {}
+interface RecipeItemFormProps {
+  addRecipe: (recipe: IRecipe) => void;
+}
 
-export const RecipeItemForm: React.FC<
-  RecipeItemFormProps
-> = ({}: RecipeItemFormProps) => {
+export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
+  addRecipe,
+}: RecipeItemFormProps) => {
   const [recipe, setRecipe] = useState<IRecipe>();
 
   //states for recipe
@@ -50,6 +50,12 @@ export const RecipeItemForm: React.FC<
   const [recipeUrl, setRecipeUrl] = useState("");
   const [urlError, setUrlError] = useState<string>();
   const [addInstruction, setAddInstruction] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (recipe) {
+      addRecipe(recipe);
+    }
+  }, [recipe]);
 
   const fetchData = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -331,7 +337,6 @@ export const RecipeItemForm: React.FC<
         />
         <EmbeddedButton onClick={(e) => fetchData(e)}>fetch</EmbeddedButton>
       </LongInputContainer>
-      {recipe && <RecipeItem recipe={recipe}></RecipeItem>}
     </>
   );
 };

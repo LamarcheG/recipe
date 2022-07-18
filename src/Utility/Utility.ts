@@ -76,8 +76,3 @@ export const isValidUrl = (url: string): boolean => {
 export const isImage = (url: string): boolean => {
   return /\.(jpeg|jpg|gif|png)$/.test(url);
 };
-
-//verify if a string is an ingredient. An ingredient start with a quantity and a name.ex: 1 cup of flour or 1 boîte de 500 g de pâtes à lasagne or 350 g (0,75 lbs) de viande haché (bœuf, porc, veau ou encore mieux, un mélange des trois)
-export const isIngredient = (ingredient: string): boolean => {
-  return /^\d+\s+[a-zA-Z]+$/.test(ingredient);
-};

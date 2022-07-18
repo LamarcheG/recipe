@@ -1,7 +1,25 @@
+import { RecipeItem } from "Components/RecipeItem/RecipeItem";
+import { IRecipe } from "Interfaces/GlobalInterfaces";
 import React from "react";
 
-interface RecipeListProps {}
+interface RecipeListProps {
+  recipes: IRecipe[];
+}
 
-export const RecipeList: React.FC<RecipeListProps> = ({}) => {
-  return <></>;
+export const RecipeList: React.FC<RecipeListProps> = ({
+  recipes,
+}: RecipeListProps) => {
+  return (
+    <>
+      {recipes.length > 0 && (
+        <ul>
+          {recipes.map((recipe, index) => (
+            <li key={index}>
+              <RecipeItem recipe={recipe}></RecipeItem>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
 };
