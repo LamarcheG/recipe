@@ -100,9 +100,15 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
       setDescription(e.target.value);
     }
     if (e.target.name === "prepTime") {
+      if (isNaN(Number(e.target.value))) {
+        return;
+      }
       setPrepTime(e.target.value);
     }
     if (e.target.name === "cookTime") {
+      if (isNaN(Number(e.target.value))) {
+        return;
+      }
       setCookTime(e.target.value);
     }
     if (e.target.name === "recipeIngredient") {
