@@ -13,6 +13,14 @@ import {
   LongInput,
   IngredientList,
   CreateRecipeButton,
+  ImageList,
+  ImageItem,
+  IngredientItem,
+  InstructionItem,
+  InstructionList,
+  ImageTag,
+  ImageText,
+  ImageDelete,
 } from "./RecipeItemForm.style";
 
 interface RecipeItemFormProps {
@@ -243,11 +251,15 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
           </LongInputContainer>
         </ShortInputContainer>
         {imageList.length > 0 && (
-          <ol>
+          <ImageList>
             {imageList.map((image, index) => (
-              <li key={index}>{image}</li>
+              <ImageItem key={index}>
+                <ImageText>Image {index + 1}:</ImageText>{" "}
+                <ImageTag src={image} alt="" />
+                <ImageDelete>X</ImageDelete>
+              </ImageItem>
             ))}
-          </ol>
+          </ImageList>
         )}
         <ShortInputContainer>
           <FormInputLabel htmlFor="description">Description</FormInputLabel>
@@ -318,7 +330,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
         {recipeIngredientList.length > 0 && (
           <IngredientList>
             {recipeIngredientList.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
+              <IngredientItem key={index}>{ingredient}</IngredientItem>
             ))}
           </IngredientList>
         )}
@@ -352,11 +364,11 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
           </InstructionForm>
         )}
         {recipeInstructions.length > 0 && (
-          <ol>
+          <InstructionList>
             {recipeInstructions.map((instruction, index) => (
-              <li key={index}>{instruction.text}</li>
+              <InstructionItem key={index}>{instruction.text}</InstructionItem>
             ))}
-          </ol>
+          </InstructionList>
         )}
         <CreateRecipeButton onClick={(e) => onRecipeFormSubmit(e)}>
           Create recipe

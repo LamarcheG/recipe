@@ -24,8 +24,6 @@ export const RecipeForm = styled.div`
   padding: 2rem 0; ;
 `;
 
-export const IngredientForm = styled.div``;
-
 export const InstructionForm = styled.div`
   display: flex;
   flex-direction: column;
@@ -74,20 +72,45 @@ export const LongInputContainer = styled.div`
   justify-content: space-between;
 `;
 
+export const CreateRecipeButton = styled.button`
+  width: 100%;
+  height: 30px;
+`;
+
+export const ImageList = styled.ol`
+  width: 30%;
+`;
+export const ImageItem = styled.li`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+`;
+export const ImageText = styled.p`
+  font-size: var(--step--1);
+`;
+export const ImageTag = styled.img`
+  height: 30px;
+`;
+export const ImageDelete = styled.button``;
+
 export const IngredientList = styled.ul`
-  list-style: none;
+  list-style: inside;
   margin: auto;
   padding: 0 0 1rem 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 0.5rem 1rem;
-  justify-items: center;
+  align-items: center;
   @media (max-width: 700px) {
     grid-template-columns: 1fr;
   }
 `;
 
-export const CreateRecipeButton = styled.button`
-  width: 100%;
-  height: 30px;
+export const IngredientItem = styled.li``;
+
+export const InstructionList = styled.ol``;
+export const InstructionItem = styled.li`
+  padding: 0 0 0.5rem 0;
 `;

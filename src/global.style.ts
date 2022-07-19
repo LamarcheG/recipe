@@ -24,6 +24,10 @@ button{
 }
 ul{
     list-style:none;
+    list-style-position: inside;
+}
+ol{
+  list-style-position: inside;
 }
 h1 {
   font-size: var(--step-5);
