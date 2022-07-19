@@ -1,38 +1,33 @@
 import { IInstructions } from "Interfaces/GlobalInterfaces";
 
-//function that convert from P3Y6M4DT12H30M5S to 3 years, 6 months, 4 days, 12 hours, 30 minutes, 5 seconds
-export const convertFromISO = (time: string): string => {
-  const [, years, months, days, hours, minutes, seconds] = time.match(
-    /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/
-  )!;
-  const yearsString = years && years !== "0" ? `${years} years` : "";
-  const monthsString = months && months !== "0" ? `${months} months` : "";
-  const daysString = days && days !== "0" ? `${days} days` : "";
-  const hoursString = hours && hours !== "0" ? `${hours}h` : "";
-  const minutesString = minutes && minutes !== "0" ? `${minutes} min` : "";
-  const secondsString = seconds && seconds !== "0" ? `${seconds} sec` : "";
-  const timeStringArray = [
-    yearsString,
-    monthsString,
-    daysString,
-    hoursString,
-    minutesString,
-    secondsString,
-  ];
-  const timeStringArrayFiltered = timeStringArray.filter(
-    (timeString) => timeString !== ""
-  );
-  const result = timeStringArrayFiltered.join(":");
-  return result;
+///P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/
+//function that convert from P3Y6M4DT12H30M5S to minutes
+export const convertFromISO = (time: string): number => {
+  let total = 0;
+  let regex =
+    /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+  let match = regex.exec(time);
+  if (match) {
+    total += parseInt(match[1] ? match[1] : "0") * 365 * 24 * 60;
+    total += parseInt(match[2] ? match[2] : "0") * 30 * 24 * 60;
+    total += parseInt(match[3] ? match[3] : "0") * 24 * 60;
+    total += parseInt(match[4] ? match[4] : "0") * 60;
+    total += parseInt(match[5] ? match[5] : "0");
+  }
+  return total;
 };
 
 //convert from minutes to P3Y6M4DT12H30M5S
-export const convertToISO = (time: number): string => {
-  const years = Math.floor(time / 525600);
-  const months = Math.floor((time % 525600) / 43200);
-  const days = Math.floor((time % 43200) / 1440);
-  const hours = Math.floor((time % 1440) / 60);
-  const minutes = Math.floor(time % 60);
+export const convertToISO = (time: string): string => {
+  if (!Number(time)) {
+    return time;
+  }
+  let total = parseInt(time);
+  const years = Math.floor(total / 525600);
+  const months = Math.floor((total % 525600) / 43200);
+  const days = Math.floor((total % 43200) / 1440);
+  const hours = Math.floor((total % 1440) / 60);
+  const minutes = Math.floor(total % 60);
   const seconds = 0;
   const result = `P${years}Y${months}M${days}DT${hours}H${minutes}M${seconds}S`;
   return result;

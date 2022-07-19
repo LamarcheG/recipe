@@ -1,7 +1,12 @@
 import { IRecipe, IInstructions } from "Interfaces/GlobalInterfaces";
 import React, { useEffect, useState } from "react";
 import { scrapper } from "Utility/Scrapper";
-import { convertToISO, isImage, isValidUrl } from "Utility/Utility";
+import {
+  convertFromISO,
+  convertToISO,
+  isImage,
+  isValidUrl,
+} from "Utility/Utility";
 import {
   EmbeddedButton,
   ShortInputContainer,
@@ -28,9 +33,9 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
   const [name, setName] = useState("");
   const [image, setImage] = useState<string>("");
   const [imageList, setImageList] = useState<string[]>([]);
-  const [description, setDescription] = useState<string | undefined>();
-  const [prepTime, setPrepTime] = useState<number | undefined>();
-  const [cookTime, setCookTime] = useState<number | undefined>();
+  const [description, setDescription] = useState<string>("");
+  const [prepTime, setPrepTime] = useState<string>("");
+  const [cookTime, setCookTime] = useState<string>("");
   const [recipeIngredient, setRecipeIngredient] = useState<string>("");
   const [recipeIngredientList, setRecipeIngredientList] = useState<string[]>(
     []
@@ -38,9 +43,9 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
   const [recipeInstructions, setRecipeInstructions] = useState<IInstructions[]>(
     []
   );
-  const [recipeCategory, setRecipeCategory] = useState<string | undefined>();
-  const [datePublished, setDatePublished] = useState<string | undefined>();
-  const [recipeYield, setRecipeYield] = useState<string | number | undefined>();
+  const [recipeCategory, setRecipeCategory] = useState<string>("");
+  const [datePublished, setDatePublished] = useState<string>("");
+  const [recipeYield, setRecipeYield] = useState<string | number>("");
 
   //states for the instructions
   const [instructionText, setInstructionText] = useState<string>("");
@@ -66,7 +71,22 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
       return;
     }
     const data = await scrapper(recipeUrl);
-    setRecipe(data);
+    if (data) {
+      setName(data.name);
+      setImageList(data.image);
+      setDescription(data.description ? data.description : "");
+      setPrepTime(data.prepTime ? data.prepTime : "");
+      setCookTime(data.cookTime ? data.cookTime : "");
+      if (data.recipeIngredient) {
+        setRecipeIngredientList(data.recipeIngredient);
+      }
+      if (data.recipeInstructions) {
+        setRecipeInstructions(data.recipeInstructions);
+      }
+      setRecipeCategory(data.recipeCategory ? data.recipeCategory : "");
+      setDatePublished(data.datePublished ? data.datePublished : "");
+      setRecipeYield(data.recipeYield ? data.recipeYield : "");
+    }
   };
   const onRecipeFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 0) {
@@ -85,10 +105,10 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
       setDescription(e.target.value);
     }
     if (e.target.name === "prepTime") {
-      setPrepTime(Number(e.target.value));
+      setPrepTime(e.target.value);
     }
     if (e.target.name === "cookTime") {
-      setCookTime(Number(e.target.value));
+      setCookTime(e.target.value);
     }
     if (e.target.name === "recipeIngredient") {
       setRecipeIngredient(e.target.value);
@@ -185,6 +205,17 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
 
   return (
     <>
+      <p>{urlError}</p>
+      <LongInputContainer>
+        <LongInput
+          type="text"
+          name="url"
+          id="url"
+          placeholder="Url"
+          onChange={(e) => onRecipeFormChange(e)}
+        />
+        <EmbeddedButton onClick={(e) => fetchData(e)}>fetch</EmbeddedButton>
+      </LongInputContainer>
       <RecipeForm>
         <ShortInputContainer>
           <FormInputLabel htmlFor="name">Name</FormInputLabel>
@@ -193,7 +224,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             name="name"
             id="name"
             onChange={(e) => onRecipeFormChange(e)}
-            required
+            value={name}
           />
         </ShortInputContainer>
         <ShortInputContainer>
@@ -204,7 +235,6 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
               name="image"
               id="image"
               onChange={(e) => onRecipeFormChange(e)}
-              required
             />
             <EmbeddedButton onClick={(e) => onImageFormSubmit(e)}>
               Add
@@ -212,11 +242,11 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
           </LongInputContainer>
         </ShortInputContainer>
         {imageList.length > 0 && (
-          <ul>
+          <ol>
             {imageList.map((image, index) => (
               <li key={index}>{image}</li>
             ))}
-          </ul>
+          </ol>
         )}
         <ShortInputContainer>
           <FormInputLabel htmlFor="description">Description</FormInputLabel>
@@ -225,6 +255,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             name="description"
             id="description"
             onChange={(e) => onRecipeFormChange(e)}
+            value={description}
           />
         </ShortInputContainer>
         <ShortInputContainer>
@@ -235,6 +266,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             id="prepTime"
             onChange={(e) => onRecipeFormChange(e)}
             min="0"
+            value={prepTime ? convertFromISO(prepTime) : ""}
           />
         </ShortInputContainer>
         <ShortInputContainer>
@@ -245,6 +277,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             id="cookTime"
             min="0"
             onChange={(e) => onRecipeFormChange(e)}
+            value={cookTime ? convertFromISO(cookTime) : ""}
           />
         </ShortInputContainer>
         <ShortInputContainer>
@@ -254,6 +287,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             name="recipeCategory"
             id="recipeCategory"
             onChange={(e) => onRecipeFormChange(e)}
+            value={recipeCategory}
           />
         </ShortInputContainer>
         <ShortInputContainer>
@@ -263,6 +297,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             name="recipeYield"
             id="recipeYield"
             onChange={(e) => onRecipeFormChange(e)}
+            value={recipeYield}
           />
         </ShortInputContainer>
         <ShortInputContainer>
@@ -316,27 +351,16 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
           </InstructionForm>
         )}
         {recipeInstructions.length > 0 && (
-          <ul>
+          <ol>
             {recipeInstructions.map((instruction, index) => (
               <li key={index}>{instruction.text}</li>
             ))}
-          </ul>
+          </ol>
         )}
         <CreateRecipeButton onClick={(e) => onRecipeFormSubmit(e)}>
           Create recipe
         </CreateRecipeButton>
       </RecipeForm>
-      <p>{urlError}</p>
-      <LongInputContainer>
-        <LongInput
-          type="text"
-          name="url"
-          id="url"
-          placeholder="Url"
-          onChange={(e) => onRecipeFormChange(e)}
-        />
-        <EmbeddedButton onClick={(e) => fetchData(e)}>fetch</EmbeddedButton>
-      </LongInputContainer>
     </>
   );
 };

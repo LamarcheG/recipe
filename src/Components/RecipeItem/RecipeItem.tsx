@@ -53,7 +53,7 @@ export const RecipeItem: React.FC<RecipeItemProps> = ({
               <ExtraInfoContentContainer>
                 <ExtraInfoTitle>Prep time</ExtraInfoTitle>
                 <ExtraInfoContent>
-                  {convertFromISO(recipe.prepTime.toString())}
+                  {convertFromISO(recipe.prepTime)}
                 </ExtraInfoContent>
               </ExtraInfoContentContainer>
             )}
@@ -61,7 +61,7 @@ export const RecipeItem: React.FC<RecipeItemProps> = ({
               <ExtraInfoContentContainer>
                 <ExtraInfoTitle>Cook time</ExtraInfoTitle>
                 <ExtraInfoContent>
-                  {convertFromISO(recipe.cookTime.toString())}
+                  {convertFromISO(recipe.cookTime)}
                 </ExtraInfoContent>
               </ExtraInfoContentContainer>
             )}
