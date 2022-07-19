@@ -1,5 +1,6 @@
 import { IInstructions, IRecipe } from "Interfaces/GlobalInterfaces";
 import {
+  convertFromISO,
   removeSpecialCharacters,
   removeSpecialCharactersFromIngredients,
   removeSpecialCharactersFromInstructions,
@@ -128,8 +129,8 @@ const buildRecipeObject = (recipeJson: any): IRecipe => {
     name: recipeJson.name,
     image: recipeJson.image,
     description: removeSpecialCharacters(recipeJson.description),
-    prepTime: recipeJson.prepTime,
-    cookTime: recipeJson.cookTime,
+    prepTime: convertFromISO(recipeJson.prepTime),
+    cookTime: convertFromISO(recipeJson.cookTime),
     recipeIngredient: removeSpecialCharactersFromIngredients(
       recipeJson.recipeIngredient
     ),

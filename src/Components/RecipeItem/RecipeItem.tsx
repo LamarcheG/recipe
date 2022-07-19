@@ -1,6 +1,5 @@
 import { IRecipe } from "Interfaces/GlobalInterfaces";
 import React from "react";
-import { convertFromISO } from "Utility/Utility";
 import {
   ContainerCard,
   ContentContainer,
@@ -52,17 +51,13 @@ export const RecipeItem: React.FC<RecipeItemProps> = ({
             {recipe.prepTime && (
               <ExtraInfoContentContainer>
                 <ExtraInfoTitle>Prep time</ExtraInfoTitle>
-                <ExtraInfoContent>
-                  {convertFromISO(recipe.prepTime)}
-                </ExtraInfoContent>
+                <ExtraInfoContent>{recipe.prepTime}</ExtraInfoContent>
               </ExtraInfoContentContainer>
             )}
             {recipe.cookTime && (
               <ExtraInfoContentContainer>
                 <ExtraInfoTitle>Cook time</ExtraInfoTitle>
-                <ExtraInfoContent>
-                  {convertFromISO(recipe.cookTime)}
-                </ExtraInfoContent>
+                <ExtraInfoContent>{recipe.cookTime}</ExtraInfoContent>
               </ExtraInfoContentContainer>
             )}
             {recipe.recipeYield && (

@@ -1,12 +1,7 @@
 import { IRecipe, IInstructions } from "Interfaces/GlobalInterfaces";
 import React, { useEffect, useState } from "react";
 import { scrapper } from "Utility/Scrapper";
-import {
-  convertFromISO,
-  convertToISO,
-  isImage,
-  isValidUrl,
-} from "Utility/Utility";
+import { isImage, isValidUrl } from "Utility/Utility";
 import {
   EmbeddedButton,
   ShortInputContainer,
@@ -31,25 +26,25 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
 
   //states for recipe
   const [name, setName] = useState("");
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState("");
   const [imageList, setImageList] = useState<string[]>([]);
-  const [description, setDescription] = useState<string>("");
-  const [prepTime, setPrepTime] = useState<string>("");
-  const [cookTime, setCookTime] = useState<string>("");
-  const [recipeIngredient, setRecipeIngredient] = useState<string>("");
+  const [description, setDescription] = useState("");
+  const [prepTime, setPrepTime] = useState("0");
+  const [cookTime, setCookTime] = useState("0");
+  const [recipeIngredient, setRecipeIngredient] = useState("");
   const [recipeIngredientList, setRecipeIngredientList] = useState<string[]>(
     []
   );
   const [recipeInstructions, setRecipeInstructions] = useState<IInstructions[]>(
     []
   );
-  const [recipeCategory, setRecipeCategory] = useState<string>("");
-  const [datePublished, setDatePublished] = useState<string>("");
+  const [recipeCategory, setRecipeCategory] = useState("");
+  const [datePublished, setDatePublished] = useState("");
   const [recipeYield, setRecipeYield] = useState<string | number>("");
 
   //states for the instructions
-  const [instructionText, setInstructionText] = useState<string>("");
-  const [instructionName, setInstructionName] = useState<string>("");
+  const [instructionText, setInstructionText] = useState("");
+  const [instructionName, setInstructionName] = useState("");
 
   //states for the scrapper
   const [recipeUrl, setRecipeUrl] = useState("");
@@ -192,8 +187,8 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
       name,
       image: imageList ? imageList : [],
       description,
-      prepTime: prepTime ? convertToISO(prepTime) : undefined,
-      cookTime: cookTime ? convertToISO(cookTime) : undefined,
+      prepTime: prepTime,
+      cookTime: cookTime,
       recipeIngredient: recipeIngredientList,
       recipeInstructions,
       recipeCategory,
@@ -261,23 +256,23 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
         <ShortInputContainer>
           <FormInputLabel htmlFor="prepTime">Prep time(minutes)</FormInputLabel>
           <input
-            type="number"
+            type="text"
             name="prepTime"
             id="prepTime"
-            onChange={(e) => onRecipeFormChange(e)}
             min="0"
-            value={prepTime ? convertFromISO(prepTime) : ""}
+            onChange={(e) => onRecipeFormChange(e)}
+            value={prepTime}
           />
         </ShortInputContainer>
         <ShortInputContainer>
           <FormInputLabel htmlFor="cookTime">Cook time(minutes)</FormInputLabel>
           <input
-            type="number"
+            type="text"
             name="cookTime"
             id="cookTime"
             min="0"
             onChange={(e) => onRecipeFormChange(e)}
-            value={cookTime ? convertFromISO(cookTime) : ""}
+            value={cookTime}
           />
         </ShortInputContainer>
         <ShortInputContainer>
