@@ -80,23 +80,8 @@ export const CreateRecipeButton = styled.button`
 export const ImageList = styled.ol`
   width: 30%;
 `;
-export const ImageItem = styled.li`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 0;
-`;
-export const ImageText = styled.p`
-  font-size: var(--step--1);
-`;
-export const ImageTag = styled.img`
-  height: 30px;
-`;
-export const ImageDelete = styled.button``;
 
 export const IngredientList = styled.ul`
-  list-style: inside;
   margin: auto;
   padding: 0 0 1rem 0;
   display: grid;
@@ -107,8 +92,6 @@ export const IngredientList = styled.ul`
     grid-template-columns: 1fr;
   }
 `;
-
-export const IngredientItem = styled.li``;
 
 export const InstructionList = styled.ol``;
 export const InstructionItem = styled.li`

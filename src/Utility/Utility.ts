@@ -20,9 +20,9 @@ export const convertFromISO = (time: string): string => {
 //function to remove &quot; and &amp; and &#39; from the string
 export const removeSpecialCharacters = (string: string) => {
   return string
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, "&")
-    .replace(/&#039;/g, "'");
+    ?.replace(/&quot;/g, "")
+    .replace(/&amp;/g, "")
+    .replace(/&#39;/g, "");
 };
 
 //function to remove special characters form ingredients

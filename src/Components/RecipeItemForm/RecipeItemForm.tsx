@@ -2,6 +2,8 @@ import { IRecipe, IInstructions } from "Interfaces/GlobalInterfaces";
 import React, { useEffect, useState } from "react";
 import { scrapper } from "Utility/Scrapper";
 import { isImage, isValidUrl } from "Utility/Utility";
+import { ImageItem } from "./ImageItem/ImageItem";
+import { IngredientItem } from "./IngredientItem/IngredientItem";
 import {
   EmbeddedButton,
   ShortInputContainer,
@@ -14,13 +16,8 @@ import {
   IngredientList,
   CreateRecipeButton,
   ImageList,
-  ImageItem,
-  IngredientItem,
   InstructionItem,
   InstructionList,
-  ImageTag,
-  ImageText,
-  ImageDelete,
 } from "./RecipeItemForm.style";
 
 interface RecipeItemFormProps {
@@ -212,6 +209,22 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
     setRecipe(newRecipe);
   };
 
+  const onDeleteImage = (index: number) => {
+    setImageList((prev) => {
+      const newImageList = [...prev];
+      newImageList.splice(index, 1);
+      return newImageList;
+    });
+  };
+
+  const onDeleteRecipeIngredient = (index: number) => {
+    setRecipeIngredientList((prev) => {
+      const newRecipeIngredientList = [...prev];
+      newRecipeIngredientList.splice(index, 1);
+      return newRecipeIngredientList;
+    });
+  };
+
   return (
     <>
       <p>{urlError}</p>
@@ -253,11 +266,12 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
         {imageList.length > 0 && (
           <ImageList>
             {imageList.map((image, index) => (
-              <ImageItem key={index}>
-                <ImageText>Image {index + 1}:</ImageText>{" "}
-                <ImageTag src={image} alt="" />
-                <ImageDelete>X</ImageDelete>
-              </ImageItem>
+              <ImageItem
+                key={index}
+                index={index}
+                image={image}
+                onDeleteImage={onDeleteImage}
+              ></ImageItem>
             ))}
           </ImageList>
         )}
@@ -330,7 +344,12 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
         {recipeIngredientList.length > 0 && (
           <IngredientList>
             {recipeIngredientList.map((ingredient, index) => (
-              <IngredientItem key={index}>{ingredient}</IngredientItem>
+              <IngredientItem
+                key={index}
+                index={index}
+                ingredient={ingredient}
+                onDeleteRecipeIngredient={onDeleteRecipeIngredient}
+              ></IngredientItem>
             ))}
           </IngredientList>
         )}
