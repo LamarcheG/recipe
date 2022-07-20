@@ -259,6 +259,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             id="name"
             onChange={(e) => onRecipeFormChange(e)}
             value={name}
+            placeholder="Lasagna"
           />
         </ShortInputContainer>
         <ShortInputContainer>
@@ -269,6 +270,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
               name="image"
               id="image"
               onChange={(e) => onRecipeFormChange(e)}
+              placeholder="https://www.google.com/img/logo.png"
             />
             <EmbeddedButton onClick={(e) => onImageFormSubmit(e)}>
               Add
@@ -295,6 +297,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             id="description"
             onChange={(e) => onRecipeFormChange(e)}
             value={description}
+            placeholder="A godly Lasagna"
           />
         </ShortInputContainer>
         <ShortInputContainer>
@@ -327,6 +330,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             id="recipeCategory"
             onChange={(e) => onRecipeFormChange(e)}
             value={recipeCategory}
+            placeholder="Main course"
           />
         </ShortInputContainer>
         <ShortInputContainer>
@@ -337,6 +341,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
             id="recipeYield"
             onChange={(e) => onRecipeFormChange(e)}
             value={recipeYield}
+            placeholder="4 people"
           />
         </ShortInputContainer>
         <ShortInputContainer>
