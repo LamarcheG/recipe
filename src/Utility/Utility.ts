@@ -1,6 +1,5 @@
 import { IInstructions } from "Interfaces/GlobalInterfaces";
 
-///P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/
 //function that convert from P3Y6M4DT12H30M5S to minutes
 export const convertFromISO = (time: string): string => {
   let total = 0;
@@ -48,6 +47,7 @@ export const removeSpecialCharactersFromInstructions = (
 
 //verify that an input is a valid url
 export const isValidUrl = (url: string): boolean => {
+  url = url.replace(/\s/g, "");
   return /^(http|https):\/\/[^ "]+$/.test(url);
 };
 

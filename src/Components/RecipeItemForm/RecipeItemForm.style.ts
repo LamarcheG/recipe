@@ -20,7 +20,7 @@ export const RecipeForm = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 40%;
+  width: 50%;
   padding: 2rem 0; ;
 `;
 
@@ -39,7 +39,7 @@ export const ShortInputContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
 `;
 
 export const FormInputLabel = styled.label`
@@ -93,7 +93,7 @@ export const IngredientList = styled.ul`
   }
 `;
 
-export const InstructionList = styled.ol``;
-export const InstructionItem = styled.li`
-  padding: 0 0 0.5rem 0;
+export const InstructionList = styled.ol`
+  list-style: none;
+  counter-reset: item;
 `;

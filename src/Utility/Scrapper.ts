@@ -8,6 +8,7 @@ import {
 
 //gets the html from the url
 const getHtml = async (url: string): Promise<string> => {
+  url = url.replace(/\s/g, "");
   const response = await fetch(url)
     .then((res) => res.text())
     .catch((err) => {

@@ -4,6 +4,7 @@ import { scrapper } from "Utility/Scrapper";
 import { isImage, isValidUrl } from "Utility/Utility";
 import { ImageItem } from "./ImageItem/ImageItem";
 import { IngredientItem } from "./IngredientItem/IngredientItem";
+import { InstructionItem } from "./InstructionItem/InstructionItem";
 import {
   EmbeddedButton,
   ShortInputContainer,
@@ -16,7 +17,6 @@ import {
   IngredientList,
   CreateRecipeButton,
   ImageList,
-  InstructionItem,
   InstructionList,
 } from "./RecipeItemForm.style";
 
@@ -49,7 +49,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
 
   //states for the instructions
   const [instructionText, setInstructionText] = useState("");
-  const [instructionName, setInstructionName] = useState("");
+  const [instructionId, setInstructionId] = useState(-1);
 
   //states for the scrapper
   const [recipeUrl, setRecipeUrl] = useState("");
@@ -139,8 +139,8 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
     if (e.target.name === "instructionText") {
       setInstructionText(e.target.value);
     }
-    if (e.target.name === "instructionName") {
-      setInstructionName(e.target.value);
+    if (e.target.name === "instructionId") {
+      setInstructionId(Number(e.target.value));
     }
   };
 
@@ -182,12 +182,16 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
     }
     const newInstruction: IInstructions = {
       type: "HowToStep",
-      name: instructionName?.length > 0 ? instructionName : undefined,
       text: instructionText,
     };
-    setInstructionName("");
     setInstructionText("");
-    setRecipeInstructions((prev) => [...prev, newInstruction]);
+    //add the instruction to the list at the correct index
+    setRecipeInstructions((prev) => {
+      const newInstructions = [...prev];
+      newInstructions.splice(instructionId - 1, 0, newInstruction);
+      return newInstructions;
+    });
+    setInstructionId(-1);
   };
 
   const onRecipeFormSubmit = (
@@ -222,6 +226,14 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
       const newRecipeIngredientList = [...prev];
       newRecipeIngredientList.splice(index, 1);
       return newRecipeIngredientList;
+    });
+  };
+
+  const onDeleteRecipeInstruction = (index: number) => {
+    setRecipeInstructions((prev) => {
+      const newRecipeInstructions = [...prev];
+      newRecipeInstructions.splice(index, 1);
+      return newRecipeInstructions;
     });
   };
 
@@ -362,11 +374,12 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
         {addInstruction && (
           <InstructionForm>
             <ShortInputContainer>
-              <FormInputLabel htmlFor="instructionName">Name</FormInputLabel>
+              <FormInputLabel htmlFor="instructionId">Step #</FormInputLabel>
               <input
-                type="text"
-                name="instructionName"
-                id="instructionName"
+                type="number"
+                min={1}
+                name="instructionId"
+                id="instructionId"
                 onChange={(e) => onInstructionFormChange(e)}
               />
             </ShortInputContainer>
@@ -385,7 +398,12 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
         {recipeInstructions.length > 0 && (
           <InstructionList>
             {recipeInstructions.map((instruction, index) => (
-              <InstructionItem key={index}>{instruction.text}</InstructionItem>
+              <InstructionItem
+                key={index}
+                index={index}
+                instruction={instruction}
+                onDeleteRecipeInstruction={onDeleteRecipeInstruction}
+              ></InstructionItem>
             ))}
           </InstructionList>
         )}
