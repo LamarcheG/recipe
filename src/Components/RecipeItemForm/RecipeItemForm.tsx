@@ -1,5 +1,5 @@
 import { IRecipe, IInstructions } from "Interfaces/GlobalInterfaces";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { scrapper } from "Utility/Scrapper";
 import { isImage, isValidUrl } from "Utility/Utility";
 import { ImageItem } from "./ImageItem/ImageItem";
@@ -27,8 +27,6 @@ interface RecipeItemFormProps {
 export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
   addRecipe,
 }: RecipeItemFormProps) => {
-  const [recipe, setRecipe] = useState<IRecipe>();
-
   //states for recipe
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
@@ -55,12 +53,6 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
   const [recipeUrl, setRecipeUrl] = useState("");
   const [urlError, setUrlError] = useState<string>();
   const [addInstruction, setAddInstruction] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (recipe) {
-      addRecipe(recipe);
-    }
-  }, [recipe]);
 
   const fetchData = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -210,7 +202,7 @@ export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
       datePublished,
       recipeYield,
     };
-    setRecipe(newRecipe);
+    addRecipe(newRecipe);
   };
 
   const onDeleteImage = (index: number) => {
