@@ -12,11 +12,7 @@ interface ImageItemProps {
   onDeleteImage: (index: number) => void;
 }
 
-export const ImageItem: React.FC<ImageItemProps> = ({
-  index,
-  image,
-  onDeleteImage,
-}: ImageItemProps) => {
+export const ImageItem = ({ index, image, onDeleteImage }: ImageItemProps) => {
   return (
     <>
       <ImageItemTag key={index}>

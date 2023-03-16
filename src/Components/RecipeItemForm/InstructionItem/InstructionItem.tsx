@@ -12,7 +12,7 @@ interface InstructionItemProps {
   onDeleteRecipeInstruction: (index: number) => void;
 }
 
-export const InstructionItem: React.FC<InstructionItemProps> = ({
+export const InstructionItem = ({
   index,
   instruction,
   onDeleteRecipeInstruction,

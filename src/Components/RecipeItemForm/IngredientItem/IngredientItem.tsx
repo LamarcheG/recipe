@@ -11,7 +11,7 @@ interface IngredientItemProps {
   onDeleteRecipeIngredient: (index: number) => void;
 }
 
-export const IngredientItem: React.FC<IngredientItemProps> = ({
+export const IngredientItem = ({
   index,
   ingredient,
   onDeleteRecipeIngredient,

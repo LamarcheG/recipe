@@ -24,9 +24,7 @@ interface RecipeItemProps {
   recipe: IRecipe;
 }
 
-export const RecipeItem: React.FC<RecipeItemProps> = ({
-  recipe,
-}: RecipeItemProps) => {
+export const RecipeItem = ({ recipe }: RecipeItemProps) => {
   const convertPortions = (portions: string | number): string => {
     if (typeof portions === "number") {
       if (portions === 1) {

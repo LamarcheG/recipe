@@ -24,9 +24,7 @@ interface RecipeItemFormProps {
   addRecipe: (recipe: IRecipe) => void;
 }
 
-export const RecipeItemForm: React.FC<RecipeItemFormProps> = ({
-  addRecipe,
-}: RecipeItemFormProps) => {
+export const RecipeItemForm = ({ addRecipe }: RecipeItemFormProps) => {
   //states for recipe
   const [name, setName] = useState("");
   const [image, setImage] = useState("");

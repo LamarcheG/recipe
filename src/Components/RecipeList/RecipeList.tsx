@@ -6,9 +6,7 @@ interface RecipeListProps {
   recipes: IRecipe[];
 }
 
-export const RecipeList: React.FC<RecipeListProps> = ({
-  recipes,
-}: RecipeListProps) => {
+export const RecipeList = ({ recipes }: RecipeListProps) => {
   return (
     <>
       {recipes.length > 0 && (
